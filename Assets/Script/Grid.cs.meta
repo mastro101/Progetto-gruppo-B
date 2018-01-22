@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 2d9a925e6a085574093771f5b893555c
+timeCreated: 1516633093
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - casella: {fileID: 100000, guid: 12cbb60c17a6bc34899d7ea2b100631b, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
