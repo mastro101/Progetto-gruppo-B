@@ -9,8 +9,6 @@ public class GridTest : MonoBehaviour {
     public List<CellDataTest> Cells = new List<CellDataTest>();
 
 
-    public int X;
-    public int Z;
 
 
     private void Awake()
@@ -31,22 +29,36 @@ public class GridTest : MonoBehaviour {
     {
 
 
-        // Crea cloni delle caselle per formare la griglia
         for (int X = 0; X < x; X++)
         {
             for (int Z = 0; Z < z; Z++)
             {
+                Cells.Add(new CellDataTest(X, Z, new Vector3(casella.transform.localScale.x * X, 0, casella.transform.localScale.z * Z)));
+            }
+        }
+
+        for (int X = 0; X < x; X++)
+        {
+            for (int Z = 0; Z < z; Z++)
+            {
+                CellDataTest cell = Cells.Find(c => c.X == X && c.Z == Z);
                 // Debug
                 GameObject casellaClone = Instantiate(casella);
                 casellaClone.transform.position += new Vector3(casella.transform.localScale.x * X, casella.transform.position.y, casella.transform.localScale.z * Z);
-
-                Cells.Add(new CellDataTest(X, Z, new Vector3 (casella.transform.localScale.x * X, 0, casella.transform.localScale.z * Z)));
-            }           
+            }
         }
-        Destroy(gameObject.GetComponent<MeshRenderer>());
-    }
+
+
+
+            }
 
     #region API
+
+    public CellDataTest FindCell(int x, int z)
+    {
+        return Cells.Find
+    }
+
 
     public bool IsValidPosition(int x, int z)
     {

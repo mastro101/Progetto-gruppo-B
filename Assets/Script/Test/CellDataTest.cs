@@ -20,5 +20,9 @@ public class CellDataTest {
         WorldPosition = _worldPosition;
     }
 
+    public void SetValidity (bool _isValid)
+    {
+        
+    }
 
 }
