@@ -23,7 +23,7 @@ public class Grid : MonoBehaviour {
     private void Update()
     {
         
-        // Elimina una casella
+        // Seleziona una casella
         Select();
         
     }
@@ -85,7 +85,7 @@ public class Grid : MonoBehaviour {
         {
             Destroy(grid[selectedX,selectedZ].GetComponent<MeshRenderer>());
         }
-
+        // Trova la posizione della casella
         selectedCasella = grid[selectedX, selectedZ].transform;
     }
 }
