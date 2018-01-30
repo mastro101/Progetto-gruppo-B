@@ -6,7 +6,7 @@ public class Grid : MonoBehaviour {
 
     public GameObject casella;
     public List<CellData> Cells = new List<CellData>();
-
+    public float CellSize = 1;
     public int xSize;
     public int zSize;
 
@@ -15,39 +15,38 @@ public class Grid : MonoBehaviour {
     private void Awake()
     {
         Cells = new List<CellData>();
-        GridSize(5, 3);
+        GridSize(5, 5);
     }
-
-
-    void Start()
-    {
-
-    }
-
-
 
     void GridSize(int x, int z)
     {
-        for (int _x = 0; _x < x; _x++)
+        xSize = x;
+        zSize = z;
+
+        if (CellSize < 1)
         {
-            for (int _z = 0; _z < z; _z++)
-            {
-                Cells.Add(new CellData(_x, _z, new Vector3(casella.transform.localScale.x * _x, 0, casella.transform.localScale.z * _z)));
-            }
+            CellSize = casella.transform.localScale.x;
         }
 
         for (int _x = 0; _x < x; _x++)
         {
             for (int _z = 0; _z < z; _z++)
             {
-                CellData cell = Cells.Find(c => c.X == _x && c.Z == _z);
-                // Debug
-                GameObject casellaClone = Instantiate(casella);
-                casellaClone.transform.position += new Vector3(casella.transform.localScale.x * _x, casella.transform.position.y, casella.transform.localScale.z * _z);
+                Cells.Add(new CellData(_x, _z, new Vector3(_x * CellSize, transform.position.y, _z * CellSize)));
             }
         }
-        xSize = x;
-        zSize = z;
+
+
+        for (int _x = 0; _x < x; _x++)
+        {
+            for (int _z = 0; _z < z; _z++)
+            {
+                CellData cell = FindCell(_x, _z);
+                // Debug
+                if (cell.IsValid)
+                    Instantiate(casella, cell.WorldPosition, casella.transform.rotation, transform);
+            }
+        }
     }
 
     #region API

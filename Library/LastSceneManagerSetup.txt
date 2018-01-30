@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scene/qwerty.unity
+- path: Assets/Scene/Main Scene.unity
   isLoaded: 1
   isActive: 1

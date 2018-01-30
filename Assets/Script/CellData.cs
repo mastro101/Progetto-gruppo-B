@@ -8,6 +8,7 @@ public class CellData
     public int X;
     public int Z;
     public Vector3 WorldPosition;
+    public bool IsValid = true;
 
     public CellData(int _xPos, int _zPos, Vector3 _worldPosition)
     {
@@ -18,7 +19,7 @@ public class CellData
 
     public void SetValidity(bool _isValid)
     {
-
+        IsValid = _isValid;
     }
 
 }
