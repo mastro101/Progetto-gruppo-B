@@ -4,88 +4,80 @@ using UnityEngine;
 
 public class Grid : MonoBehaviour {
 
-    public Transform selectedCasella;
     public GameObject casella;
-    public GameObject[,] grid;
+    public List<CellData> Cells = new List<CellData>();
 
-    int xAxis = 0;
-    int zAxis = 0;
-    public int selectedX = 0;
-    public int selectedZ = 0;
-    void Start () {
+    public int xSize;
+    public int zSize;
 
-        // Crea una griglia (X x Z)
-        GridSize(10,3);
-        selectedCasella = grid[0, 0].transform;
-        
-	}
 
-    private void Update()
+
+    private void Awake()
     {
-        
-        // Seleziona una casella
-        Select();
-        
+        Cells = new List<CellData>();
+        GridSize(5, 3);
     }
+
+
+    void Start()
+    {
+
+    }
+
+
 
     void GridSize(int x, int z)
     {
-        // Crea un array grande quanto la griglia
-        grid = new GameObject[x,z];
-
-        // Crea cloni delle caselle per formare la griglia
-        for (int X = 0; X < x; X++)
+        for (int _x = 0; _x < x; _x++)
         {
-            for (int Z = 0; Z < z; Z++)
+            for (int _z = 0; _z < z; _z++)
             {
-                GameObject casellaClone = Instantiate(casella);
-                Destroy(casellaClone.GetComponent<Grid>());
-                casellaClone.transform.position += new Vector3(casella.transform.localScale.x * X, 0,casella.transform.localScale.z * Z);
-                // Assegna le caselle alla Griglia
-                grid[X,Z] = casellaClone;
-                xAxis = X;
-                zAxis = Z;
+                Cells.Add(new CellData(_x, _z, new Vector3(casella.transform.localScale.x * _x, 0, casella.transform.localScale.z * _z)));
             }
-            Destroy(gameObject.GetComponent<MeshRenderer>());
         }
-        
+
+        for (int _x = 0; _x < x; _x++)
+        {
+            for (int _z = 0; _z < z; _z++)
+            {
+                CellData cell = Cells.Find(c => c.X == _x && c.Z == _z);
+                // Debug
+                GameObject casellaClone = Instantiate(casella);
+                casellaClone.transform.position += new Vector3(casella.transform.localScale.x * _x, casella.transform.position.y, casella.transform.localScale.z * _z);
+            }
+        }
+        xSize = x;
+        zSize = z;
     }
 
+    #region API
 
-
-
-
-    void Select()
+    public CellData FindCell(int x, int z)
     {
-        
-
-        if (Input.GetKeyDown(KeyCode.RightArrow) && selectedX < xAxis)
-        {
-            selectedX++;
-            Debug.Log("x = " + selectedX);
-        }
-        if (Input.GetKeyDown(KeyCode.LeftArrow) && selectedX > 0)
-        {
-            selectedX--;
-            Debug.Log("x = " + selectedX);
-        }
-
-        if (Input.GetKeyDown(KeyCode.UpArrow) && selectedZ < zAxis)
-        {
-            selectedZ++;
-            Debug.Log(selectedZ);
-        }
-        if (Input.GetKeyDown(KeyCode.DownArrow) && selectedZ > 0)
-        {
-            selectedZ--;
-            Debug.Log(selectedZ);
-        }
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            Destroy(grid[selectedX,selectedZ].GetComponent<MeshRenderer>());
-        }
-        // Trova la posizione della casella
-        selectedCasella = grid[selectedX, selectedZ].transform;
+        return Cells.Find(c => c.X == x && c.Z == z);
     }
+
+    public Vector3 GetWorldPosition(int x, int z)
+    {
+        foreach (CellData cell in Cells)
+        {
+            if (cell.X == x && cell.Z == z)
+            {
+                return cell.WorldPosition;
+            }
+        }
+        return Cells[0].WorldPosition;
+    }
+
+    public bool IsValidPosition(int x, int z)
+    {
+        if (x < 0 || z < 0)
+            return false;
+        if (x > xSize - 1 || z > zSize - 1)
+            return false;
+
+        return true;
+    }
+
+        #endregion
 }
