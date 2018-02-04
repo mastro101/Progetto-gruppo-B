@@ -5,11 +5,14 @@ using UnityEngine;
 public class Player : MonoBehaviour {
 
     public Grid grid;
+    public PlayerStatistiche playerStatistiche;
     public int XPos;
     public int ZPos;
 
     int XPos_old;
     int ZPos_old;
+
+    int DistanceMove;
 
     //Quaternion sinistra = new Vector3 (0f,0f,0f);
 
@@ -25,29 +28,26 @@ public class Player : MonoBehaviour {
     {
         XPos_old = XPos;
         ZPos_old = ZPos;
+        DistanceMove = playerStatistiche.GetDistance();
         if (Input.GetKeyDown(KeyCode.A))//Sinistra
         {
-            XPos--;
+            XPos-=DistanceMove;
             Move();
-            //transform.Rotate(new Vector3(0f,0f,0f));
         }
         else if (Input.GetKeyDown(KeyCode.D))//Destra
         {
-            XPos++;
+            XPos += DistanceMove;
             Move();
-            //transform.Rotate(new Vector3(0f, 180f, 0f));
         }
         else if (Input.GetKeyDown(KeyCode.W))//Su
         {
-            ZPos++;
+            ZPos += DistanceMove;
             Move();
-            //transform.Rotate(new Vector3(0f, 90f, 0f));
         }
         else if (Input.GetKeyDown(KeyCode.S))//Giu
         {
-            ZPos--;
+            ZPos -= DistanceMove;
             Move();
-            //transform.Rotate(new Vector3(0f, 270f, 0f));
         }
 
 
