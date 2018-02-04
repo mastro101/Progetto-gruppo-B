@@ -6,16 +6,20 @@ public class Grid : MonoBehaviour {
 
     public GameObject casella;
     public List<CellData> Cells = new List<CellData>();
-    public float CellSize = 1;
+    public float CellSize = -1;
     public int xSize;
     public int zSize;
+
+    public int Width = 0, Height = 0;
+
+    public float DistanceTile;
 
 
 
     private void Awake()
     {
         Cells = new List<CellData>();
-        GridSize(5, 5);
+        GridSize(Width, Height);
     }
 
     void GridSize(int x, int z)
@@ -23,10 +27,11 @@ public class Grid : MonoBehaviour {
         xSize = x;
         zSize = z;
 
-        if (CellSize < 1)
-        {
-            CellSize = casella.transform.localScale.x;
-        }
+        //if (CellSize < 1)
+        //{
+            CellSize = casella.transform.localScale.x + DistanceTile;
+            //Debug.Log("Prova");
+        //}
 
         for (int _x = 0; _x < x; _x++)
         {

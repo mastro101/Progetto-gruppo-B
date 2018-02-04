@@ -11,10 +11,13 @@ public class Player : MonoBehaviour {
     int XPos_old;
     int ZPos_old;
 
+    //Quaternion sinistra = new Vector3 (0f,0f,0f);
+
     // Use this for initialization
     void Start()
     {
         transform.position = grid.GetWorldPosition(XPos, ZPos);
+        transform.position += new Vector3(0f, 0.55f, 0f);
     }
 
     // Update is called once per frame
@@ -22,25 +25,29 @@ public class Player : MonoBehaviour {
     {
         XPos_old = XPos;
         ZPos_old = ZPos;
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.A))//Sinistra
         {
             XPos--;
             Move();
+            //transform.Rotate(new Vector3(0f,0f,0f));
         }
-        else if (Input.GetKeyDown(KeyCode.D))
+        else if (Input.GetKeyDown(KeyCode.D))//Destra
         {
             XPos++;
             Move();
+            //transform.Rotate(new Vector3(0f, 180f, 0f));
         }
-        else if (Input.GetKeyDown(KeyCode.W))
+        else if (Input.GetKeyDown(KeyCode.W))//Su
         {
             ZPos++;
             Move();
+            //transform.Rotate(new Vector3(0f, 90f, 0f));
         }
-        else if (Input.GetKeyDown(KeyCode.S))
+        else if (Input.GetKeyDown(KeyCode.S))//Giu
         {
             ZPos--;
             Move();
+            //transform.Rotate(new Vector3(0f, 270f, 0f));
         }
 
 
@@ -51,6 +58,7 @@ public class Player : MonoBehaviour {
         if (grid.IsValidPosition(XPos, ZPos))
         {
             transform.position = grid.GetWorldPosition(XPos, ZPos);
+            transform.position += new Vector3(0f, 0.55f, 0f);
         }
         else
         {
