@@ -14,15 +14,12 @@ public class Grid : MonoBehaviour {
 
     public float DistanceTile;
 
-    Material material;
 
 
     private void Awake()
     {
         Cells = new List<CellData>();
         GridSize(Width, Height);
-
-        //material = casella.GetComponent<Renderer>().material;
     }
 
     void GridSize(int x, int z)
@@ -69,9 +66,9 @@ public class Grid : MonoBehaviour {
             }
         }
 
-
-        //ChangeColorTileCity();
     }
+
+
 
     void SetCity() {
         FindCell(0, 2).SetNameTile("A");
@@ -99,7 +96,13 @@ public class Grid : MonoBehaviour {
         }
     }*/
 
-    
+    public int GetWidth() {
+        return Width;
+    }
+
+    public int GetHeight() {
+        return Height;
+    }
 
     #region API
 

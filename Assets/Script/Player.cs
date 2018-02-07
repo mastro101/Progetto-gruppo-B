@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
@@ -22,9 +22,11 @@ public class Player : MonoBehaviour{
     // Use this for initialization
     void Start()
     {
+        SetPositionPlayer();
         transform.position = grid.GetWorldPosition(XPos, ZPos); //Setto la posizione del player
         transform.position += new Vector3(0f, 0.55f, 0f);   //Fix posizione Y del player
         grid.FindCell(XPos, ZPos).SetValidity(false);   //Siccome il player è sopra a una casella, nessun altro giocatore potrà andarci sopra
+        
     }
 
     // Update is called once per frame
@@ -135,5 +137,28 @@ public class Player : MonoBehaviour{
                 Move();
             }
         } 
+    }
+
+
+    //Set Position Player
+    void SetPositionPlayer() {
+        switch (Name) {
+            case "Green":
+                XPos = 0;
+                ZPos = 0;
+                break;
+            case "Yellow":
+                XPos = 0;
+                ZPos = grid.GetHeight() - 1;
+                break;
+            case "Red":
+                XPos = grid.GetWidth() - 1;
+                ZPos = 0;
+                break;
+            case "Blue":
+                XPos = grid.GetWidth() - 1;
+                ZPos = grid.GetHeight() - 1;
+                break;
+        }
     }
 }
