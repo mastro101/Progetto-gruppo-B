@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Grid : MonoBehaviour {
 
-    public GameObject casella;
+    public GameObject Tile;
     public List<CellData> Cells = new List<CellData>();
     public float CellSize = -1;
     public int xSize;
@@ -29,8 +29,9 @@ public class Grid : MonoBehaviour {
     {
         xSize = x;
         zSize = z;
+        string ControlCity;
 
-        CellSize = casella.transform.localScale.x + DistanceTile;
+        CellSize = Tile.transform.localScale.x + DistanceTile;
 
         for (int _x = 0; _x < x; _x++)
         {
@@ -41,6 +42,7 @@ public class Grid : MonoBehaviour {
             }
         }
 
+        SetCity();
 
         for (int _x = 0; _x < x; _x++)
         {
@@ -49,13 +51,26 @@ public class Grid : MonoBehaviour {
                 CellData cell = FindCell(_x, _z);
                 // Debug
                 if (cell.IsValid)
-                    Instantiate(casella, cell.WorldPosition, casella.transform.rotation, transform);
+                {
+                    GameObject tile = (GameObject)Instantiate(Tile);
+                    tile.transform.position = cell.WorldPosition;
+
+                    if (cell == Center())
+                    {
+                        tile.GetComponent<Renderer>().material.color = Color.black;
+                    }
+
+                    
+                    ControlCity = FindCell(_x, _z).GetNameTile();
+                    if (ControlCity != "")
+                        tile.GetComponent<Renderer>().material.color = Color.red;
+                        Debug.Log(ControlCity);
+                }
             }
         }
 
 
-        SetCity();
-        ChangeColorTileCity();
+        //ChangeColorTileCity();
     }
 
     void SetCity() {
@@ -69,7 +84,7 @@ public class Grid : MonoBehaviour {
         FindCell(9, 2).SetNameTile("H");
     }
 
-    void ChangeColorTileCity() {
+    /*void ChangeColorTileCity() {
         string ControlCity;
         for (int _x = 0; _x < Width; _x++)
         {
@@ -82,7 +97,7 @@ public class Grid : MonoBehaviour {
                     Debug.Log(ControlCity);
             }
         }
-    }
+    }*/
 
     
 
@@ -91,6 +106,13 @@ public class Grid : MonoBehaviour {
     public CellData FindCell(int x, int z)
     {
         return Cells.Find(c => c.X == x && c.Z == z);
+    }
+
+    public CellData Center()
+    {
+        int w = Width / 2;
+        int h = Height / 2;
+        return Cells.Find(c => c.X == w && c.Z == h);
     }
 
     public Vector3 GetWorldPosition(int x, int z)
@@ -104,8 +126,6 @@ public class Grid : MonoBehaviour {
         }
         return Cells[0].WorldPosition;
     }
-
-
 
     public bool IsValidPosition(int x, int z)
     {
