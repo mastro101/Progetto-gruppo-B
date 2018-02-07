@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Grid : MonoBehaviour {
 
-    public GameObject casella;
+    public GameObject Tile;
     public List<CellData> Cells = new List<CellData>();
     public float CellSize = -1;
     public int xSize;
@@ -20,6 +20,7 @@ public class Grid : MonoBehaviour {
     {
         Cells = new List<CellData>();
         GridSize(Width, Height);
+
     }
 
     void GridSize(int x, int z)
@@ -29,7 +30,7 @@ public class Grid : MonoBehaviour {
 
         //if (CellSize < 1)
         //{
-            CellSize = casella.transform.localScale.x + DistanceTile;
+            CellSize = Tile.transform.localScale.x + DistanceTile;
             //Debug.Log("Prova");
         //}
 
@@ -49,7 +50,15 @@ public class Grid : MonoBehaviour {
                 CellData cell = FindCell(_x, _z);
                 // Debug
                 if (cell.IsValid)
-                    Instantiate(casella, cell.WorldPosition, casella.transform.rotation, transform);
+                {
+                    GameObject tile = (GameObject)Instantiate(Tile);
+                    tile.transform.position = cell.WorldPosition;
+                    
+                    if (cell == Center())
+                    {
+                        tile.GetComponent<Renderer>().material.color = Color.blue;
+                    }
+                }   
             }
         }
     }
@@ -59,6 +68,13 @@ public class Grid : MonoBehaviour {
     public CellData FindCell(int x, int z)
     {
         return Cells.Find(c => c.X == x && c.Z == z);
+    }
+
+    public CellData Center()
+    {
+        int w = Width / 2;
+        int h = Height / 2;
+        return Cells.Find(c => c.X == w && c.Z == h);
     }
 
     public Vector3 GetWorldPosition(int x, int z)
