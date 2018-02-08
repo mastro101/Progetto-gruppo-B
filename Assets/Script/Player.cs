@@ -8,6 +8,8 @@ public class Player : MonoBehaviour{
     public Grid grid;
     public PlayerStatistiche playerStatistiche;
     public DetectObject detectObject;
+    public GamePlayManager Gpm;
+
 
     public int XPos;    //Posizione X del Player sulla casella
     public int ZPos;    //Posizione Z del Player sulla casella
@@ -15,7 +17,7 @@ public class Player : MonoBehaviour{
     int XPos_old;
     int ZPos_old;
 
-    int DistanceMove; // Di quanto il giocatore si Muove
+    int DistanceMove=1; // Di quanto il giocatore si Muove
 
     public string Name; //Indica il nome del Player
 
@@ -26,6 +28,8 @@ public class Player : MonoBehaviour{
         transform.position = grid.GetWorldPosition(XPos, ZPos); //Setto la posizione del player
         transform.position += new Vector3(0f, 0.55f, 0f);   //Fix posizione Y del player
         grid.FindCell(XPos, ZPos).SetValidity(false);   //Siccome il player è sopra a una casella, nessun altro giocatore potrà andarci sopra
+
+
         
     }
 
@@ -33,8 +37,13 @@ public class Player : MonoBehaviour{
     void Update()
     {
         //MainMove();   //Movimento del PLayer tramite WASD
-        MainMove2();    //Movimento del Player tramite Doppio Click
-        playerStatistiche.SetDistace(Name, DistanceMove);   //Setto il movimento del player
+        if (Name == Gpm.Name)
+        {
+            Debug.Log("pirla funziona "+Gpm.Name);
+            MainMove2();    //Movimento del Player tramite Doppio Click
+
+        }
+        //playerStatistiche.SetDistace(Name, DistanceMove);   //Setto il movimento del player
 
     }
 
@@ -48,6 +57,9 @@ public class Player : MonoBehaviour{
                 globalPosition += new Vector3(0f, 0.55f, 0f); ;
                 transform.DOMove(globalPosition, 0.6f).SetEase(Ease.Linear);
                 grid.FindCell(XPos, ZPos).SetValidity(false);
+            detectObject.CorrectMove = false;
+            Gpm.CurrentState = GamePlayManager.State.Event;
+            Gpm.CurrentState = GamePlayManager.State.End;
         }
         else
         {
@@ -92,7 +104,8 @@ public class Player : MonoBehaviour{
         int ObjectX = detectObject.GetX();
         int ObjectZ = detectObject.GetZ();
         DistanceMove = playerStatistiche.GetDistance();
-        if (Input.GetMouseButtonDown(0)) {
+        if (detectObject.CorrectMove == true) {
+
             if (ObjectX == XPos && ObjectZ - 1 == ZPos && grid.FindCell(ObjectX, ObjectZ).GetValidity())
             { //SU
                 grid.FindCell(XPos, ZPos).SetValidity(true);

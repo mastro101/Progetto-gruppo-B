@@ -5,6 +5,9 @@ using UnityEngine;
 public class DetectObject : MonoBehaviour {
 	
     public float XPosition, ZPosition;
+    public bool CorrectMove;
+
+
     float Size;
 
     Vector3 TilePosition,CellPosition;
@@ -27,6 +30,7 @@ public class DetectObject : MonoBehaviour {
                 if (hit.transform != null)
                 {
                    
+                   
                     XPosition = hit.transform.position.x;
                     ZPosition = hit.transform.position.z;
 
@@ -48,6 +52,7 @@ public class DetectObject : MonoBehaviour {
                             if (CellPosition == TilePosition) {
                                 _z = z;
                                 _x = x;
+                                CorrectMove = true;
                                 break;
                             }
                                 
