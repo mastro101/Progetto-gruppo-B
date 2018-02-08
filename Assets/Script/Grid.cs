@@ -7,8 +7,6 @@ public class Grid : MonoBehaviour {
     public GameObject Tile;
     public List<CellData> Cells = new List<CellData>();
     public float CellSize = -1;
-    public int xSize;
-    public int zSize;
     public string NameTile;
     public int Width = 0, Height = 0;
 
@@ -24,8 +22,6 @@ public class Grid : MonoBehaviour {
 
     void GridSize(int x, int z)
     {
-        xSize = x;
-        zSize = z;
         string ControlCity;
 
         CellSize = Tile.transform.localScale.x + DistanceTile;
@@ -41,23 +37,23 @@ public class Grid : MonoBehaviour {
 
         SetCity();
 
+        // Rende visibile la griglia
         for (int _x = 0; _x < x; _x++)
         {
             for (int _z = 0; _z < z; _z++)
             {
                 CellData cell = FindCell(_x, _z);
-                // Debug
                 if (cell.IsValid)
                 {
                     GameObject tile = (GameObject)Instantiate(Tile);
                     tile.transform.position = cell.WorldPosition;
-
+                    //Colora il centro
                     if (cell == Center())
                     {
                         tile.GetComponent<Renderer>().material.color = Color.black;
                     }
 
-                    
+                    // Colora le città                    
                     ControlCity = FindCell(_x, _z).GetNameTile();
                     if (ControlCity != "")
                         tile.GetComponent<Renderer>().material.color = Color.red;
@@ -68,8 +64,7 @@ public class Grid : MonoBehaviour {
 
     }
 
-
-
+    // Imposta la posizione delle città sulla griglia
     void SetCity() {
         FindCell(0, 2).SetNameTile("A");
         FindCell(2, 1).SetNameTile("B");
@@ -80,21 +75,6 @@ public class Grid : MonoBehaviour {
         FindCell(7, 1).SetNameTile("G");
         FindCell(9, 2).SetNameTile("H");
     }
-
-    /*void ChangeColorTileCity() {
-        string ControlCity;
-        for (int _x = 0; _x < Width; _x++)
-        {
-            for (int _z = 0; _z < Height; _z++)
-            {
-
-                ControlCity = FindCell(_x, _z).GetNameTile();
-                if (ControlCity != "")
-                    //material.color = Color.red;
-                    Debug.Log(ControlCity);
-            }
-        }
-    }*/
 
     public int GetWidth() {
         return Width;
@@ -134,7 +114,7 @@ public class Grid : MonoBehaviour {
     {
         if (x < 0 || z < 0)
             return false;
-        if (x > xSize - 1 || z > zSize - 1)
+        if (x > Width - 1 || z > Height - 1)
             return false;
 
         return true;

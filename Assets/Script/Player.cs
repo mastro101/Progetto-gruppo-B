@@ -21,7 +21,7 @@ public class Player : MonoBehaviour{
 
     public string Name; //Indica il nome del Player
 
-    // Use this for initialization
+
     void Start()
     {
         SetPositionPlayer();
@@ -33,7 +33,7 @@ public class Player : MonoBehaviour{
         
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         //MainMove();   //Movimento del PLayer tramite WASD
@@ -43,21 +43,21 @@ public class Player : MonoBehaviour{
             MainMove2();    //Movimento del Player tramite Doppio Click
 
         }
-        //playerStatistiche.SetDistace(Name, DistanceMove);   //Setto il movimento del player
-
+        //playerStatistiche.SetDistace(Name, DistanceMove);   //Setto il movimento del player // Da rivedere in futuro
     }
 
     //Movimento del Player
-
     void Move()
     {
         if (grid.IsValidPosition(XPos, ZPos))
         {
-                Vector3 globalPosition = grid.GetWorldPosition(XPos, ZPos);
-                globalPosition += new Vector3(0f, 0.55f, 0f); ;
-                transform.DOMove(globalPosition, 0.6f).SetEase(Ease.Linear);
-                grid.FindCell(XPos, ZPos).SetValidity(false);
+            Vector3 globalPosition = grid.GetWorldPosition(XPos, ZPos);
+            globalPosition += new Vector3(0f, 0.55f, 0f); ;
+            transform.DOMove(globalPosition, 0.6f).SetEase(Ease.Linear);
+            grid.FindCell(XPos, ZPos).SetValidity(false);
             detectObject.CorrectMove = false;
+
+            // Finito il movimento passa alla fase successiva
             Gpm.CurrentState = GamePlayManager.State.Event;
             Gpm.CurrentState = GamePlayManager.State.End;
         }
